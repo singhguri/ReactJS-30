@@ -3,12 +3,17 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 // import Calculator from "./components/Calculator/calculator";
-import Clock from "./components/Clock/clock";
+// import Clock from "./components/Clock/clock";
+// import DiceRoll from "./components/Dice-Roll/diceRoll";
+import LoginForm from "./components/Login-Form/loginForm";
+import "font-awesome/css/font-awesome.min.css";
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <Calculator /> */}
-    <Clock />
+    {/* <Clock /> */}
+    {/* <DiceRoll /> */}
+    <LoginForm />
   </React.StrictMode>,
   document.getElementById("root")
 );
