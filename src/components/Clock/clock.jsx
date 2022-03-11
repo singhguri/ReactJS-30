@@ -7,7 +7,6 @@ const Clock = () => {
   const [TextClock, setTextClock] = useState({
     textHour: 0,
     textMinutes: 0,
-    textSeconds: 0,
     textAmPm: "",
     dateDay: 0,
     dateMonth: "",
@@ -15,29 +14,33 @@ const Clock = () => {
   });
 
   useEffect(() => {
-    clockText();
+    const intervalID = setInterval(() => {
+      clockText();
+    }, 1000);
+
+    return () => clearInterval(intervalID);
   }, []);
 
-  //   /*==================== CLOCK ====================*/
-  //   const hour = document.getElementById("clock-hour"),
-  //     minutes = document.getElementById("clock-minutes"),
-  //     seconds = document.getElementById("clock-seconds");
+  /*==================== CLOCK ====================*/
+  const hour = document.querySelector("#clock-hour"),
+    minutes = document.querySelector("#clock-minutes"),
+    seconds = document.querySelector("#clock-seconds");
 
-  //   const clock = () => {
-  //     let date = new Date();
+  const clock = () => {
+    let date = new Date();
 
-  //     let hh = date.getHours() * 30,
-  //       mm = date.getMinutes() * 6,
-  //       ss = date.getSeconds() * 6;
+    let hh = date.getHours() * 30,
+      mm = date.getMinutes() * 6,
+      ss = date.getSeconds() * 6;
 
-  //     // We add a rotation to the elements
-  //     hour.style.transform = `rotateZ(${hh + mm / 12}deg)`;
-  //     minutes.style.transform = `rotateZ(${mm}deg)`;
-  //     seconds.style.transform = `rotateZ(${ss}deg)`;
-  //   };
-  //   setInterval(clock, 1000); // 1000 = 1s
+    // We add a rotation to the elements
+    hour.style.transform = `rotateZ(${hh + mm / 12}deg)`;
+    minutes.style.transform = `rotateZ(${mm}deg)`;
+    seconds.style.transform = `rotateZ(${ss}deg)`;
+  };
+  setInterval(clock, 1000); // 1000 = 1s
 
-  //   /*==================== CLOCK & DATE TEXT ====================*/
+  /*==================== CLOCK & DATE TEXT ====================*/
 
   const clockText = () => {
     let date = new Date();
@@ -71,7 +74,6 @@ const Clock = () => {
 
     // Show time
     let textHour = hh + ":";
-    setTextClock({ ...TextClock, textHour });
 
     // Show a zero before the minutes
     if (mm < 10) {
@@ -80,11 +82,9 @@ const Clock = () => {
 
     // Show minutes
     let textMinutes = mm;
-    setTextClock({ ...TextClock, textMinutes });
 
     // Show am or pm
     let textAmPm = ampm;
-    setTextClock({ ...TextClock, textAmPm });
 
     // If you want to show the name of the day of the week
     // let week = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
@@ -106,63 +106,25 @@ const Clock = () => {
     ];
 
     // We show the day, the month and the year
-    let dateDay = day;
-    setTextClock({ ...TextClock, dateDay });
-
-    // dateWeek.innerHTML = `${week[dayweek]}`
+    let dateDay = day + " ";
     let dateMonth = months[month] + ",";
-    // console.log(dateMonth);
-    setTextClock({ ...TextClock, dateMonth });
-    let cls = TextClock.dateMonth;
-    // console.log(cls);
-
     let dateYear = year;
-    setTextClock({ ...TextClock, dateYear });
 
-    // console.log(TextClock);
+    textAmPm === "AM" ? setDarkTheme(false) : setDarkTheme(true);
 
-    //   setInterval(clockText, 1000); // 1000 = 1s
+    setTextClock({
+      textHour,
+      textMinutes,
+      textAmPm,
+      dateDay,
+      dateMonth,
+      dateYear,
+    });
   };
 
-  //   /*==================== DARK/LIGHT THEME ====================*/
-  //   const themeButton = document.getElementById("theme-button");
-  //   const darkTheme = "dark-theme";
-  //   const iconTheme = "bxs-sun";
-
-  //   // Previously selected topic (if user selected)
-  //   const selectedTheme = localStorage.getItem("selected-theme");
-  //   const selectedIcon = localStorage.getItem("selected-icon");
-
-  //   // We obtain the current theme that the interface has by validating the dark-theme class
-  //   const getCurrentTheme = () =>
-  //     document.body.classList.contains(darkTheme) ? "dark" : "light";
-  //   const getCurrentIcon = () =>
-  //     themeButton.classList.contains(iconTheme) ? "bxs-moon" : "bxs-sun";
-
-  //   // We validate if the user previously chose a topic
-  //   if (selectedTheme) {
-  //     // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
-  //     document.body.classList[selectedTheme === "dark" ? "add" : "remove"](
-  //       darkTheme
-  //     );
-  //     themeButton.classList[selectedIcon === "bxs-moon" ? "add" : "remove"](
-  //       iconTheme
-  //     );
-  //   }
-
-  //   // Activate / deactivate the theme manually with the button
-  //   themeButton.addEventListener("click", () => {
-  //     // Add or remove the dark / icon theme
-  //     document.body.classList.toggle(darkTheme);
-  //     themeButton.classList.toggle(iconTheme);
-  //     // We save the theme and the current icon that the user chose
-  //     localStorage.setItem("selected-theme", getCurrentTheme());
-  //     localStorage.setItem("selected-icon", getCurrentIcon());
-  //   });
-
-  const toggleTheme = () => {
-    setDarkTheme(!DarkTheme);
-  };
+  // const toggleTheme = () => {
+  //   setDarkTheme(!DarkTheme);
+  // };
 
   return (
     <div className={`main ${DarkTheme ? "dark-theme" : ""}`}>
@@ -185,12 +147,12 @@ const Clock = () => {
               <div className="clock__seconds" id="clock-seconds"></div>
 
               {/* Dark/light button */}
-              <div className="clock__theme" onClick={toggleTheme}>
+              {/* <div className="clock__theme" onClick={toggleTheme}>
                 <i
                   className={`bx bxs-${DarkTheme ? "sun" : "moon"}`}
                   id="theme-button"
                 ></i>
-              </div>
+              </div> */}
             </div>
 
             <div>
